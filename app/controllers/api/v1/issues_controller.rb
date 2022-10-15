@@ -1,10 +1,13 @@
 class Api::V1::IssuesController < ApplicationController
   def index
-    @issues = Issue.all
+    @issues = Issue.includes(:author).all
     render json: {
       issues: @issues.map { |issue|
         {
-          id: issue.id,
+          author: {
+            id: issue.author.id,
+            name: issue.author.name
+          },
           title: issue.title,
           description: issue.description
         }
@@ -13,8 +16,12 @@ class Api::V1::IssuesController < ApplicationController
   end
 
   def create
-    @issue = Issue.create!(issue_params)
+    @issue = current_user.issues.create!(issue_params)
     render json: {
+      author: {
+        id: current_user.id,
+        name: current_user.name
+      },
       title: @issue.title,
       description: @issue.description
     }, status: :ok
@@ -23,7 +30,10 @@ class Api::V1::IssuesController < ApplicationController
   def show
     @issue = Issue.find(params[:id])
     render json: {
-      id: @issue.id,
+      author: {
+        id: @issue.author.id,
+        name: @issue.author.name
+      },
       title: @issue.title,
       description: @issue.description
     }, status: :ok
@@ -33,5 +43,9 @@ class Api::V1::IssuesController < ApplicationController
 
   def issue_params
     params.require(:issue).permit(:title, :description)
+  end
+
+  def current_user
+    User.find(params[:user_id])
   end
 end
