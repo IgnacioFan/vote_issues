@@ -32,6 +32,16 @@ RSpec.describe "Api::V1::Issues", type: :request do
         }.to_json
       )
     end
+
+    it "returns 400 Bad Request" do
+      post "/api/v1/issues", params: {issue: {title: "", description: "Test descripiotn"}}
+      expect(response).to have_http_status(:bad_request)
+      expect(response.body).to eq(
+        {
+          error_message: "Validation failed: Title can't be blank"
+        }.to_json
+      )
+    end
   end
 
   describe "GET /api/v1/issues/:issue_id" do
@@ -43,6 +53,16 @@ RSpec.describe "Api::V1::Issues", type: :request do
           id: issue.id,
           title: issue.title,
           description: issue.description
+        }.to_json
+      )
+    end
+
+    it "returns 400 Not Found" do
+      get "/api/v1/issues/abc123"
+      expect(response).to have_http_status(:not_found)
+      expect(response.body).to eq(
+        {
+          error_message: "Couldn't find Issue with 'id'=abc123"
         }.to_json
       )
     end

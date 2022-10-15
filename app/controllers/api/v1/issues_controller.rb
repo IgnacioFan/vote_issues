@@ -18,10 +18,6 @@ class Api::V1::IssuesController < ApplicationController
       title: @issue.title,
       description: @issue.description
     }, status: :ok
-  rescue => e
-    render json: {
-      error_message: "Something wrong!"
-    }, status: 404
   end
 
   def show
@@ -31,10 +27,6 @@ class Api::V1::IssuesController < ApplicationController
       title: @issue.title,
       description: @issue.description
     }, status: :ok
-  rescue => e
-    render json: {
-      error_message: "Something wrong!"
-    }, status: 404
   end
 
   private
