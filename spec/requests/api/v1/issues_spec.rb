@@ -44,7 +44,8 @@ RSpec.describe "Api::V1::Issues", type: :request do
             name: author.name
           },
           title: "Test B",
-          description: "Test descripiotn"
+          description: "Test descripiotn",
+          votes: []
         }.to_json
       )
     end
