@@ -1,30 +1,30 @@
 ## Intro
 
-Assume that we have a server where we
+Assume that we have a server which
 - can raise issues
-- can vote agree or disagree for each issue.
-- Please implement the APIs for raising issues, voting, and observing the voting results.
+- can vote agree or disagree for each issue
+- can observe the voting results
 
 ## How to use
 
-set up application
+### set up application
 ```ruby
 bundle install
 
-# create a PostgreSQL DB, I prefer using docker container
+# create a PostgreSQL DB, using docker container
 docker run --name db -d -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres
 
 rails db:create
 rails db:migrate
 
-# boots Rails server
+# launch the Rails server
 rails s
 ```
 
-make api request
+### make api request
 
 ```ruby
-# see all issues
+# get all issues
 curl http://localhost:3000/api/v1/issues
 
 # get an issue by issue_id
@@ -34,12 +34,12 @@ curl http://localhost:3000/api/v1/issues/:issue_id
 curl -X POST http://localhost:3000/api/v1/issues?user_id=:user_id
      -d '{"issue": {"title": "TOO","description": "Hi, guys. This is my first issue."}}'
 
-# vote an issue
+# vote for an issue
 curl -X POST http://localhost:3000/api/v1/issues/:issue_id/vote
      -d '{"user_id": :user_id, "vote": "agree"}'
 ```
 
-## Run test
+### Run test
 
 ```ruby
 rspec spec/requests
