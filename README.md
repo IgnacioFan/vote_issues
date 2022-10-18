@@ -9,6 +9,7 @@ Assume that we have a server which
 
 ### set up application
 ```ruby
+# setup dependencies
 bundle install
 
 # create a PostgreSQL DB, using docker container
@@ -39,7 +40,7 @@ curl -X POST http://localhost:3000/api/v1/issues/:issue_id/vote
      -d '{"user_id": :user_id, "vote": "agree"}'
 ```
 
-### Run test
+### run test
 
 ```ruby
 rspec spec/requests
