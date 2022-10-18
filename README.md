@@ -1,24 +1,46 @@
-# README
+## Intro
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Assume that we have a server where we
+- can raise issues
+- can vote agree or disagree for each issue.
+- Please implement the APIs for raising issues, voting, and observing the voting results.
 
-Things you may want to cover:
+## How to use
 
-* Ruby version
+set up application
+```ruby
+bundle install
 
-* System dependencies
+# create a PostgreSQL DB, I prefer using docker container
+docker run --name db -d -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres
 
-* Configuration
+rails db:create
+rails db:migrate
 
-* Database creation
+# boots Rails server
+rails s
+```
 
-* Database initialization
+make api request
 
-* How to run the test suite
+```ruby
+# see all issues
+curl http://localhost:3000/api/v1/issues
 
-* Services (job queues, cache servers, search engines, etc.)
+# get an issue by issue_id
+curl http://localhost:3000/api/v1/issues/:issue_id
 
-* Deployment instructions
+# create an issue
+curl -X POST http://localhost:3000/api/v1/issues?user_id=:user_id
+     -d '{"issue": {"title": "TOO","description": "Hi, guys. This is my first issue."}}'
 
-* ...
+# vote an issue
+curl -X POST http://localhost:3000/api/v1/issues/:issue_id/vote
+     -d '{"user_id": :user_id, "vote": "agree"}'
+```
+
+## Run test
+
+```ruby
+rspec spec/requests
+```
